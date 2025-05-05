@@ -575,10 +575,14 @@ Componentes precisam comunicar-se para:
 - Comunicação direta de pai para filho
 - Dados imutáveis (read-only)
 
+ver projeto no [github](https://github.com/infoweb-pos/2025-pos-react-compartilhando-dados-entre-componentes-exemplo-props), em específico o commit [adicionado estado compartilhado e corrigido alguns estilos](https://github.com/infoweb-pos/2025-pos-react-compartilhando-dados-entre-componentes-exemplo-props/commit/b4b692e5a2c70d5b4d8422e2bb1235813a2a53c9).
+
 #### 2.1.2. Callback Functions : child para parent
 **Quando usar:**  
 - Filhos precisam atualizar estado do pai
 - Formulários e interações do usuário
+
+ver projeto no [github](https://github.com/infoweb-pos/2025-pos-react-compartilhando-dados-entre-componentes-exemplo-props).
 
 #### 2.1.3. Context API (Global)
 **Quando usar:**
@@ -609,3 +613,9 @@ Componentes precisam comunicar-se para:
 2. Adicione callbacks para interações  
 3. Use Context para dados globais  
 4. Considere Redux/Zustand para apps complexos
+
+
+
+## Parte 3. Codar para compartilhar dados
+
+_em breve..._
