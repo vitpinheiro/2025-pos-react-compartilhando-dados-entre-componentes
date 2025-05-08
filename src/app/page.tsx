@@ -3,7 +3,7 @@
 import type React from "react";
 
 import { useEffect, useState } from "react";
-import { carregar, TarefaInterface } from "@/data";
+import dados, { TarefaInterface } from "@/data";
 import Cabecalho from "@/componentes/Cabecalhot";
 
 interface TarefaProps {
@@ -43,7 +43,7 @@ interface TareafasProps {
 
 const Tarefas: React.FC<TareafasProps> = ({ dados }) => {
 	return (
-		<div>
+		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 			{dados.map((tarefa) => (
 				<Tarefa
 					key={tarefa.id}
@@ -56,11 +56,7 @@ const Tarefas: React.FC<TareafasProps> = ({ dados }) => {
 };
 
 const Home = () => {
-	const [tarefas, setTarefas] = useState<TarefaInterface[]>([]);
-
-	useEffect(() => {
-		carregar().then((result) => setTarefas(result));
-	}, []);
+	const tarefas: TarefaInterface[] = dados;
 
 	return (
 		<div className="container mx-auto p-4">
