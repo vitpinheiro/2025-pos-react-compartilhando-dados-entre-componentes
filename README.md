@@ -618,4 +618,21 @@ ver projeto no [github](https://github.com/infoweb-pos/2025-pos-react-compartilh
 
 ## Parte 3. Codar para compartilhar dados
 
-_em breve..._
+### Notas introdutórias
+1. Foi utilizado como código-fonte inicial o projeto final da aula [react - conceitos básicos](https://github.com/infoweb-pos/2025-pos-react-conceitos)
+2. Foi criado um arquivo `@/componentes/Cabecalho.tsx` contendo os componentes React `Cabecalho`, `Titulo` e `SubTitulo` que antes estavam em `@/app/page.tsx`.
+3. Foi atualizado em `@/app/page.tsx` com o importação do componente `Cabecalho` em `@/componentes/Cabecalho.tsx`.
+4. Foi criado o arquivo `@/data/index.ts` com a função `carregar = (): Promise<TarefaInterface[]> => {...}`, a interface (tipo) `TarefaInterface`, e a lista de tarefas `dados`. Estes 2 últimos movidos de `@/app/page.tsx`.
+5. Foi atualizado em `@/app/page.tsx` com a importação do tipo e da lista de tarefas de `@/data/index.ts` e o JSX de `Home` foi atualizado para `const tarefas: TarefaInterface[] = dados;`.
+6. Foi atualizado em `@/app/page.tsx` no componente `Tarefas` para que a lista de tarefas fique em 2 colunas em telas maiores que o _mobile_ e 1 coluna em _mobile_.
+   - `<div className="grid grid-cols-1 md:grid-cols-2 gap-4">`
+
+### O que faremos
+1. Criar um componente React para adicionar novas tarefas `ModalTarefa`.
+   - criar um input
+   - criar estado interno para guardar o input
+   - criar um botão para fechar a tela e retornar ao `Home`
+2. Modificar `Home` da variável `tarefas` para estado `const [tarefas... = useState...`.
+3. Criar uma função que adicione uma nova tarefa no estado `tarefas`. Ver [Updating Arrays in State](https://react.dev/learn/updating-arrays-in-state).
+4. Passar função para o novo componente `ModalTarefa`
+   - atualizar o botão de fechar para executar a função de adicionar nova tarefa
