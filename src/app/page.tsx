@@ -1,40 +1,31 @@
 "use client";
 
 import type React from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import dados, { TarefaInterface } from "@/data";
 import Cabecalho from "@/componentes/Cabecalho";
-import { useEffect } from "react";
-
-
 
 // Componente de Tarefa
 interface TarefaProps {
 	titulo: string;
 	concluido?: boolean;
+	onToggle: () => void;
 }
 
-const Tarefa: React.FC<TarefaProps> = ({ titulo, concluido }) => {
-	const [estaConcluido, setEstaConcluido] = useState(concluido);
-
+const Tarefa: React.FC<TarefaProps> = ({ titulo, concluido, onToggle }) => {
 	const classeCard = `p-3 mb-3 rounded-lg shadow-md hover:cursor-pointer hover:border ${
-		estaConcluido
+		concluido
 			? "bg-gray-800 hover:border-gray-800"
 			: "bg-gray-400 hover:border-gray-400"
 	}`;
 
-	const classeCorDoTexto = estaConcluido ? "text-amber-50" : "";
-
-	const escutarClique = () => {
-		console.log(`A tarefa '${titulo}' foi clicada!`);
-		setEstaConcluido(!estaConcluido);
-	};
+	const classeCorDoTexto = concluido ? "text-amber-50" : "";
 
 	return (
-		<div className={classeCard} onClick={escutarClique}>
+		<div className={classeCard} onClick={onToggle}>
 			<h3 className={`text-xl font-bold ${classeCorDoTexto}`}>{titulo}</h3>
 			<p className={`text-sm ${classeCorDoTexto}`}>
-				{estaConcluido ? "Concluída" : "Pendente"}
+				{concluido ? "Concluída" : "Pendente"}
 			</p>
 		</div>
 	);
@@ -43,9 +34,10 @@ const Tarefa: React.FC<TarefaProps> = ({ titulo, concluido }) => {
 // Lista de Tarefas
 interface TarefasProps {
 	dados: TarefaInterface[];
+	onToggle: (id: number) => void;
 }
 
-const Tarefas: React.FC<TarefasProps> = ({ dados }) => {
+const Tarefas: React.FC<TarefasProps> = ({ dados, onToggle }) => {
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 			{dados.map((tarefa) => (
@@ -53,6 +45,7 @@ const Tarefas: React.FC<TarefasProps> = ({ dados }) => {
 					key={tarefa.id}
 					titulo={tarefa.title}
 					concluido={tarefa.completed}
+					onToggle={() => onToggle(tarefa.id)}
 				/>
 			))}
 		</div>
@@ -105,27 +98,40 @@ const ModalTarefa: React.FC<ModalTarefaProps> = ({ onAdicionar, onFechar }) => {
 	);
 };
 
-// Página principal
+
 const Home = () => {
-	const [tarefas, setTarefas] = useState<TarefaInterface[]>(() => {
+	const [tarefas, setTarefas] = useState<TarefaInterface[]>([]);
+	const [mostrarModal, setMostrarModal] = useState(false);
+
+
+	useEffect(() => {
 		const tarefasSalvas = localStorage.getItem("tarefas");
-		return tarefasSalvas ? JSON.parse(tarefasSalvas) : [];
-	});
-	
+		if (tarefasSalvas) {
+			setTarefas(JSON.parse(tarefasSalvas));
+		}
+	}, []);
+
 	useEffect(() => {
 		localStorage.setItem("tarefas", JSON.stringify(tarefas));
 	}, [tarefas]);
-	
-	
-	const [mostrarModal, setMostrarModal] = useState(false);
 
 	const adicionarTarefa = (titulo: string) => {
 		const novaTarefa: TarefaInterface = {
-			id: tarefas.length + 1,
+			id: Date.now(), 
 			title: titulo,
 			completed: false,
 		};
 		setTarefas((prev) => [...prev, novaTarefa]);
+	};
+
+	const toggleTarefa = (id: number) => {
+		setTarefas((prev) =>
+			prev.map((tarefa) =>
+				tarefa.id === id
+					? { ...tarefa, completed: !tarefa.completed }
+					: tarefa
+			)
+		);
 	};
 
 	return (
@@ -139,7 +145,7 @@ const Home = () => {
 				+ Nova Tarefa
 			</button>
 
-			<Tarefas dados={tarefas} />
+			<Tarefas dados={tarefas} onToggle={toggleTarefa} />
 
 			{mostrarModal && (
 				<ModalTarefa
